@@ -30,6 +30,10 @@ class Tetris {
         this.dropCounter = 0;
         this.lastTime = 0;
         
+        // Facteur de ralentissement pour la "Pause douceur"
+        this.slowdownFactor = 1;
+        this.slowdownEndTime = 0;
+        
         // Couleurs des pièces
         this.colors = [
             null,
@@ -294,6 +298,14 @@ class Tetris {
             this.level = Math.floor(this.lines / 10) + 1;
             this.updateScore();
             this.playLineSound(linesCleared);
+            
+            // Vérifier si exactement 2 lignes ont été complétées
+            if (linesCleared === 2) {
+                // Déclencher l'événement de cadeau surprise
+                if (typeof this.onTwoLinesCleared === 'function') {
+                    this.onTwoLinesCleared();
+                }
+            }
         }
     }
 
@@ -611,13 +623,65 @@ class Tetris {
             const deltaTime = time - this.lastTime;
             this.lastTime = time;
             
+            // Vérifier si le ralentissement est terminé
+            if (this.slowdownEndTime > 0 && time > this.slowdownEndTime) {
+                this.slowdownFactor = 1;
+                this.slowdownEndTime = 0;
+            }
+            
             this.dropCounter += deltaTime;
-            if (this.dropCounter > 1000 - (this.level * 50)) {
+            // Appliquer le facteur de ralentissement à la vitesse de chute
+            const dropSpeed = (1000 - (this.level * 50)) * this.slowdownFactor;
+            if (this.dropCounter > dropSpeed) {
                 this.drop();
             }
             
             this.draw();
         }
         requestAnimationFrame(this.update.bind(this));
+    }
+
+    // Nouvelle méthode pour activer le ralentissement temporaire
+    activateSlowdown(durationMs = 10000) {
+        // Ralentir la chute des pièces de 20%
+        this.slowdownFactor = 1.2;
+        this.slowdownEndTime = performance.now() + durationMs;
+        
+        // Jouer un son pour indiquer le ralentissement
+        this.playSlowdownSound();
+    }
+    
+    // Son pour le ralentissement
+    playSlowdownSound() {
+        if (this.isSoundEnabled()) {
+            this.playTone(300, 0.2, 'sine', 0.4);
+            setTimeout(() => this.playTone(200, 0.3, 'sine', 0.4), 200);
+        }
+    }
+
+    // Nouvelle méthode pour forcer la prochaine pièce à être facile (carré ou ligne droite)
+    forceEasyPiece() {
+        // Les pièces faciles sont le carré (O) et la ligne droite (I)
+        const easyPieces = ['O', 'I'];
+        const randomEasyPiece = easyPieces[Math.floor(Math.random() * easyPieces.length)];
+        
+        // Remplacer la prochaine pièce par une pièce facile
+        this.nextPiece = {
+            matrix: this.pieces[randomEasyPiece],
+            pos: {x: 3, y: 0},
+            type: randomEasyPiece
+        };
+        
+        // Mettre à jour l'affichage de la prochaine pièce
+        this.drawNextPiece();
+        
+        // Jouer un son spécial pour indiquer le cadeau
+        this.playGiftSound();
+    }
+    
+    // Son pour le cadeau surprise
+    playGiftSound() {
+        this.playTone(700, 0.1, 'sine', 0.4);
+        setTimeout(() => this.playTone(900, 0.2, 'sine', 0.4), 100);
     }
 } 

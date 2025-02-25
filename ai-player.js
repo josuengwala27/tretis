@@ -284,4 +284,42 @@ class AIPlayer extends Tetris {
         }
         this.dropCounter = 0;
     }
+
+    // Surcharge de la méthode clearLines pour déclencher l'événement onTwoLinesCleared
+    clearLines() {
+        let linesCleared = 0;
+        
+        outer: for (let y = this.board.length - 1; y >= 0; y--) {
+            for (let x = 0; x < this.board[y].length; x++) {
+                if (this.board[y][x] === 0) continue outer;
+            }
+            
+            const row = this.board.splice(y, 1)[0].fill(0);
+            this.board.unshift(row);
+            linesCleared++;
+            y++;
+        }
+        
+        if (linesCleared > 0) {
+            this.lines += linesCleared;
+            this.score += this.calculateScore(linesCleared);
+            this.level = Math.floor(this.lines / 10) + 1;
+            this.updateScore();
+            this.playLineSound(linesCleared);
+            
+            // Vérifier si exactement 2 lignes ont été complétées
+            if (linesCleared === 2) {
+                // Déclencher l'événement de cadeau surprise
+                if (typeof this.onTwoLinesCleared === 'function') {
+                    this.onTwoLinesCleared();
+                }
+            }
+        }
+    }
+    
+    // Surcharge de la méthode playGiftSound pour réduire le volume
+    playGiftSound() {
+        this.playTone(700, 0.1, 'sine', 0.2); // Volume réduit pour l'IA
+        setTimeout(() => this.playTone(900, 0.2, 'sine', 0.2), 100);
+    }
 } 

@@ -477,4 +477,72 @@ body {
 .default-value {
     color: rgba(255, 255, 255, 0.5);
     font-style: italic;
+}
+
+/* Style pour la notification de cadeau */
+.gift-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background-color: rgba(52, 152, 219, 0.9);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.gift-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Animation pour le cadeau */
+@keyframes gift {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(-5deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+    75% { transform: scale(1.1) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.gift-notification.show {
+    animation: gift 0.5s ease;
+}
+
+/* Style pour la notification de ralentissement */
+.slowdown-notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background-color: rgba(155, 89, 182, 0.9); /* Couleur violette pour différencier */
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.slowdown-notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Animation pour le ralentissement */
+@keyframes slowdown {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.slowdown-notification.show {
+    animation: slowdown 1s ease;
 } 

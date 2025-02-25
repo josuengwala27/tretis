@@ -25,35 +25,6 @@
                 <div class="level">Niveau: <span id="level">1</span></div>
                 <div class="lines">Lignes: <span id="lines">0</span></div>
             </div>
-            
-            <!-- Nouveau tableau de score pour le mode multijoueur -->
-            <div id="multiScoreTable" class="multi-score-table hidden">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Joueur</th>
-                            <th>Score</th>
-                            <th>Niveau</th>
-                            <th>Lignes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Vous</td>
-                            <td id="playerScore">0</td>
-                            <td id="playerLevel">1</td>
-                            <td id="playerLines">0</td>
-                        </tr>
-                        <tr>
-                            <td>IA</td>
-                            <td id="aiScore">0</td>
-                            <td id="aiLevel">1</td>
-                            <td id="aiLines">0</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
             <div class="controls-info">
                 <h3>Contrôles</h3>
                 <p>← → : Déplacer</p>
@@ -96,20 +67,7 @@
                 <button id="menuBtn" class="menu-btn">Menu Principal</button>
                 <div class="high-scores">
                     <h4>Meilleurs Scores</h4>
-                    <div class="score-table-container">
-                        <table id="highScoresTable" class="score-table">
-                            <thead>
-                                <tr>
-                                    <th>Rang</th>
-                                    <th>Score</th>
-                                    <th>Mode</th>
-                                </tr>
-                            </thead>
-                            <tbody id="highScoresList">
-                                <!-- Les scores seront ajoutés ici dynamiquement -->
-                            </tbody>
-                        </table>
-                    </div>
+                    <ol id="highScoresList"></ol>
                 </div>
             </div>
         </div>
@@ -120,35 +78,6 @@
         <div class="game-over-content">
             <h2>Game Over!</h2>
             <p id="winnerText">Score final: <span id="finalScore">0</span></p>
-            
-            <!-- Tableau de score final pour le mode multijoueur -->
-            <div id="finalScoreTable" class="final-score-table hidden">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Joueur</th>
-                            <th>Score</th>
-                            <th>Niveau</th>
-                            <th>Lignes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Vous</td>
-                            <td id="finalPlayerScore">0</td>
-                            <td id="finalPlayerLevel">1</td>
-                            <td id="finalPlayerLines">0</td>
-                        </tr>
-                        <tr>
-                            <td>IA</td>
-                            <td id="finalAiScore">0</td>
-                            <td id="finalAiLevel">1</td>
-                            <td id="finalAiLines">0</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
             <div class="game-over-buttons">
                 <button id="restartBtn">Rejouer</button>
                 <button id="backToMenuBtn">Menu Principal</button>

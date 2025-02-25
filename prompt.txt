@@ -1,0 +1,35 @@
+Tu connais le jeu tetris ?
+
+Oui je veux que tu me cree un jeu tretis de A à Z en HTML CSS et JS avec des fonctionalités avancés et fun et une intarface utilisateur wow
+
+Espace : Chute instantanée lorsque je clique sur Espace ça fait la chute instanné mais ça met aussi en pause du coup tu peux faire en sorte que Espace soit pour mettre en Pause et Trouveer une autre touche pour la chute instanné mais aussi faire en sorte que lorsque je clique une fois sur la touche espace ça met en pause et que lorsque je reclique ça reprend le jeu
+
+Tu peux proposer quoi comme ameliorations ? Pour rendre ça plus mieux ?
+
+Là pour le son tu l'as mis quand parce que j'ai le sens quand seulement quand je clique sur Enter je veux un son au cours du jeu, un son lorsque je clique sur les touche pour depacer et roter, un son lorsque je mets en pause et que je reprend le jeu, un sens lorsque je finis en focntion du score et un son lorsque, lance une partie genre, je ne veux pas mettre des fichiers sonores moi meme, du coup gere ça 
+
+Il maque un son pour la touche descente rapide et un son lorsque la forme arrive au niveau des autres 
+
+Le son lorsque la forme touche le reste retire le stp mais garde tous les autres sons
+
+A quoi sert la partie piece garder ?
+
+Oui rajoute un son mais du coup on peut garder qu'une seul piece et on ne peut pas l'utiliser apres ou la supprimer pour sauvegader d'autre sur la meme partie ?
+
+Ah non garde le son quand on garde une piece mais remet comme c'etait avant on peut garder qu'un piece et on peut la supprimer sur une partie
+
+Rajoute alors X dans le controle avec le reste pour dire à quoi ça sert 
+
+Je veux rajouter un truc un interface à coter qui sera mon adversaire qui sera l'IA par exemple c'est comme si je jouait contre lui, moi je joue de mon coté avec les touches et tout ce qu'on fait juste là et l'IA joue automatiquement avec une logique simple (ex. : placer les pièces au mieux sans trop réfléchir) et la partie s'arret lorsque l'un perd et on affiche le score pour dire qui a gangé et ensuite on peut rejouer, genre partir de ce qu'on maintenant et rajouter une autre grille à coté pour l'IA exactement comme la mienne mais moi je vais joeur normal et lui ça sera automatique 
+
+Donc pour les deux grilles le quadrillaga est le meme et les pieces tombenet du haut vers le bas, verifie ça surout pour la grille auto car j'ai remaqué que c'etait pas le cas
+
+Okey on va ajout quelques regles de gestion
+
+Cadeau surprise
+ Quand un joueur complète 2 lignes d’un coup, l’adversaire reçoit une “pièce facile” (ex. : un
+ carré ou une ligne droite) pour l’aider un peu.
+
+ Pause douceur
+ Tous les 1 000 points, les pièces tombent 20 % plus lentement pendant 10 secondes pour les
+ deux joueurs – un petit répit pour souffler !
