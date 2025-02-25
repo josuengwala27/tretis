@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Moderne</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Menu principal -->
+    <div id="mainMenu" class="main-menu">
+        <h1>TETRIS</h1>
+        <div class="menu-buttons">
+            <button id="soloBtn" class="menu-btn">Mode Solo</button>
+            <button id="multiBtn" class="menu-btn">Mode Multijoueur</button>
+        </div>
+    </div>
+
+    <!-- Container du jeu (caché au départ) -->
+    <div id="gameContainer" class="game-container hidden">
+        <div class="game-header">
+            <!-- Score Solo -->
+            <div id="soloScoreContainer" class="score-container">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="level">Niveau: <span id="level">1</span></div>
+                <div class="lines">Lignes: <span id="lines">0</span></div>
+            </div>
+            
+            <!-- Tableau des scores Multi -->
+            <div id="multiScoreContainer" class="score-container hidden">
+                <table class="score-table">
+                    <tr>
+                        <th></th>
+                        <th>Score</th>
+                        <th>Niveau</th>
+                        <th>Lignes</th>
+                    </tr>
+                    <tr>
+                        <td>Vous</td>
+                        <td id="playerScore">0</td>
+                        <td id="playerLevel">1</td>
+                        <td id="playerLines">0</td>
+                    </tr>
+                    <tr>
+                        <td>IA</td>
+                        <td id="aiScore">0</td>
+                        <td id="aiLevel">1</td>
+                        <td id="aiLines">0</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="controls-info">
+                <h3>Contrôles</h3>
+                <p>← → : Déplacer</p>
+                <p>↑ : Rotation</p>
+                <p>↓ : Descente rapide</p>
+                <p>Entrée : Chute instantanée</p>
+                <p>Espace : Pause/Reprendre</p>
+                <p>C : Garder pièce</p>
+                <p>X : Supprimer pièce gardée</p>
+            </div>
+        </div>
+        
+        <div class="game-wrapper">
+            <div class="side-panel">
+                <div class="controls-container">
+                    <div class="hold-piece">
+                        <h4>Pièce gardée</h4>
+                        <canvas id="holdPiece"></canvas>
+                    </div>
+                    <div class="buttons-container">
+                        <button id="startBtn" class="start-btn">Démarrer</button>
+                        <button id="pauseBtn" class="pause-btn">Pause</button>
+                        <button id="menuBtn" class="menu-btn">Menu Principal</button>
+                    </div>
+                </div>
+                <div class="next-piece-container">
+                    <h4>Prochaine pièce</h4>
+                    <canvas id="nextPiece" class="next-piece"></canvas>
+                </div>
+            </div>
+            
+            <!-- Plateau du joueur -->
+            <div class="player-container">
+                <h3 id="playerTitle">Joueur</h3>
+                <canvas id="tetris" class="main-board"></canvas>
+            </div>
+            
+            <!-- Plateau du joueur automatique (visible uniquement en mode multi) -->
+            <div id="aiContainer" class="player-container hidden">
+                <h3>Ordinateur</h3>
+                <canvas id="aiTetris" class="main-board"></canvas>
+            </div>
+            
+            <!-- Meilleurs scores -->
+            <div class="high-scores">
+                <h4>Meilleurs Scores</h4>
+                <div class="high-scores-tabs">
+                    <button class="tab-btn active" data-mode="solo">Solo</button>
+                    <button class="tab-btn" data-mode="multi">Multi</button>
+                </div>
+                <div class="high-scores-content">
+                    <table id="highScoresTable" class="high-scores-table">
+                        <thead>
+                            <tr>
+                                <th>Rang</th>
+                                <th>Score</th>
+                                <th>Mode</th>
+                            </tr>
+                        </thead>
+                        <tbody id="highScoresList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Écran de fin de partie -->
+    <div id="gameOver" class="game-over hidden">
+        <div class="game-over-content">
+            <h2>Game Over!</h2>
+            <div id="soloGameOver">
+                <p id="winnerText">Score final: <span id="finalScore">0</span></p>
+            </div>
+            <div id="multiGameOver" class="hidden">
+                <h3 id="winnerAnnouncement"></h3>
+                <table class="final-score-table">
+                    <tr>
+                        <th>Joueur</th>
+                        <th>Score</th>
+                        <th>Niveau</th>
+                        <th>Lignes</th>
+                    </tr>
+                    <tr>
+                        <td>Vous</td>
+                        <td id="finalPlayerScore">0</td>
+                        <td id="finalPlayerLevel">1</td>
+                        <td id="finalPlayerLines">0</td>
+                    </tr>
+                    <tr>
+                        <td>IA</td>
+                        <td id="finalAIScore">0</td>
+                        <td id="finalAILevel">1</td>
+                        <td id="finalAILines">0</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="game-over-buttons">
+                <button id="restartBtn">Rejouer</button>
+                <button id="backToMenuBtn">Menu Principal</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="tetris.js"></script>
+    <script src="ai-player.js"></script>
+    <script src="score-manager.js"></script>
+    <script src="game-manager.js"></script>
+    <script src="debug.js"></script>
+</body>
+</html> 
