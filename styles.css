@@ -100,16 +100,14 @@ body {
     display: flex;
     gap: 20px;
     align-items: flex-start;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .side-panel {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    min-width: 200px;
+    align-items: center;
 }
 
 .side-panel h4 {
@@ -122,7 +120,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0;
+    margin: 0 10px;
 }
 
 .player-container h3 {
@@ -147,19 +145,8 @@ body {
 
 .game-stats {
     display: flex;
-    flex-direction: row;
-    gap: 15px;
-    align-items: flex-start;
-    padding: 10px;
-    background: rgba(44, 62, 80, 0.9);
-    border-radius: 5px;
-    position: relative;
-}
-
-.hold-piece {
-    display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 15px;
 }
 
 .hold-piece h4, .high-scores h4 {
@@ -168,10 +155,14 @@ body {
     color: var(--secondary-color);
 }
 
-.start-btn, .pause-btn, #restartBtn, #backToMenuBtn, #menuBtn {
-    padding: 8px 12px;
-    font-size: 0.7em;
-    margin: 5px;
+.start-btn, .pause-btn, #restartBtn, #backToMenuBtn {
+    font-family: 'Press Start 2P', cursive;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8em;
 }
 
 .start-btn {
@@ -265,10 +256,6 @@ body {
         width: 250px;
         height: 500px;
     }
-
-    .high-scores {
-        min-width: 180px;
-    }
 }
 
 @media (max-width: 768px) {
@@ -277,10 +264,8 @@ body {
     }
 
     .game-wrapper {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
+        flex-direction: column;
+        align-items: center;
     }
 
     .game-stats {
@@ -296,18 +281,6 @@ body {
     
     .main-menu h1 {
         font-size: 2em;
-    }
-
-    .side-panel {
-        min-width: 150px;
-    }
-
-    .high-scores {
-        min-width: 150px;
-    }
-
-    #aiContainer {
-        margin: 0 0 0 10px;
     }
 }
 
@@ -368,343 +341,140 @@ body {
 }
 
 /* Styles pour les tableaux de score */
-.score-table, .final-score-table, .high-scores-table {
+.multi-score-table, .final-score-table {
+    margin: 10px 0;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.multi-score-table table, .final-score-table table, .score-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 10px 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    font-size: 0.7em;
+    background-color: rgba(44, 62, 80, 0.7);
     border-radius: 5px;
-    font-size: 0.6em;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
 }
 
-.score-table th, .score-table td,
-.final-score-table th, .final-score-table td,
-.high-scores-table th, .high-scores-table td {
-    padding: 4px 6px;
-    text-align: center;
-    border: 1px solid #444;
-    color: #fff;
-}
-
-.score-table th, .final-score-table th, .high-scores-table th {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #3498db;
-    font-size: 0.9em;
-}
-
-/* Styles pour les onglets des meilleurs scores */
-.high-scores-tabs {
-    display: flex;
-    gap: 5px;
-    margin-bottom: 5px;
-}
-
-.tab-btn {
-    padding: 3px 10px;
-    background-color: #2c3e50;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: background-color 0.3s;
-    font-size: 0.6em;
-}
-
-.tab-btn.active {
-    background-color: #3498db;
-}
-
-.tab-btn:hover {
-    background-color: #34495e;
-}
-
-/* Style pour le conteneur de score */
-.score-container {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-/* Style pour l'écran de fin de partie en mode multi */
-#multiGameOver {
+.multi-score-table th, .final-score-table th, .score-table th {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 8px;
     text-align: center;
 }
 
-#winnerAnnouncement {
-    color: #3498db;
-    margin-bottom: 15px;
+.multi-score-table td, .final-score-table td, .score-table td {
+    padding: 6px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.hidden {
-    display: none !important;
+.multi-score-table tr:nth-child(odd), .final-score-table tr:nth-child(odd), .score-table tr:nth-child(odd) {
+    background-color: rgba(44, 62, 80, 0.9);
 }
 
-/* Animation pour les scores qui changent */
-@keyframes scoreChange {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+.multi-score-table tr:hover, .final-score-table tr:hover, .score-table tr:hover {
+    background-color: rgba(52, 152, 219, 0.2);
 }
 
-.score-change {
-    animation: scoreChange 0.3s ease-in-out;
+/* Container pour le tableau des meilleurs scores */
+.score-table-container {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 10px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
 }
 
-/* Style pour le conteneur des meilleurs scores */
+/* Style pour le rang dans les meilleurs scores */
+.score-table .rank-1 {
+    color: gold;
+    font-weight: bold;
+}
+
+.score-table .rank-2 {
+    color: silver;
+    font-weight: bold;
+}
+
+.score-table .rank-3 {
+    color: #cd7f32; /* bronze */
+    font-weight: bold;
+}
+
+/* Animation pour les nouveaux scores */
+@keyframes highlight {
+    0% { background-color: var(--accent-color); }
+    100% { background-color: transparent; }
+}
+
+.new-score {
+    animation: highlight 2s ease-out;
+}
+
+/* Ajustement de la taille des tableaux pour le responsive */
+@media (max-width: 768px) {
+    .multi-score-table, .final-score-table, .score-table {
+        font-size: 0.6em;
+    }
+    
+    .multi-score-table th, .final-score-table th, .score-table th,
+    .multi-score-table td, .final-score-table td, .score-table td {
+        padding: 4px;
+    }
+}
+
+/* Mise à jour du style des meilleurs scores */
 .high-scores {
-    position: relative;
-    min-width: 200px;
-    max-width: 250px;
-    margin-left: 20px;
+    margin-top: 15px;
 }
 
 .high-scores h4 {
-    font-size: 0.65em;
-    margin-bottom: 5px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+    font-size: 0.8em;
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* Style pour l'écran de fin de partie */
+.game-over-content {
+    max-width: 500px;
+    width: 90%;
+}
+
+#winnerText {
+    font-size: 1.2em;
+    margin: 15px 0;
     color: var(--secondary-color);
 }
 
-/* Ajustement des colonnes du tableau */
-.high-scores-table td:first-child,
-.high-scores-table th:first-child {
-    width: 15%;
+/* Ajustement pour le mode multijoueur */
+#multiScoreTable {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.high-scores-table td:nth-child(2),
-.high-scores-table th:nth-child(2) {
-    width: 25%;
-}
-
-.high-scores-table td:nth-child(3),
-.high-scores-table th:nth-child(3) {
-    width: 20%;
-}
-
-.high-scores-table td:nth-child(4),
-.high-scores-table th:nth-child(4) {
-    width: 40%;
+/* Style pour les scores actuels */
+.score, .level, .lines {
     font-size: 0.9em;
-}
-
-/* Style pour les lignes vides */
-.high-scores-table tr:nth-child(n+6) td {
-    color: #666;
-    font-style: italic;
-}
-
-.high-scores-table {
-    font-size: 0.55em;
-}
-
-.controls-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    border-radius: 8px;
-    min-width: 180px;
-}
-
-.buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
-    width: 100%;
-    margin: 15px 0;
-}
-
-.start-btn, .pause-btn, #menuBtn {
-    font-family: 'Press Start 2P', cursive;
-    padding: 12px 15px;
-    font-size: 0.65em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.start-btn {
-    background-color: var(--secondary-color);
-    color: white;
-    border: 2px solid #2980b9;
-}
-
-.start-btn:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-}
-
-.pause-btn {
-    background-color: var(--accent-color);
-    color: white;
-    border: 2px solid #c0392b;
-}
-
-.pause-btn:hover {
-    background-color: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-}
-
-#menuBtn {
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    border: 2px solid #34495e;
-}
-
-#menuBtn:hover {
-    background-color: #34495e;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-}
-
-.start-btn:active, .pause-btn:active, #menuBtn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-/* Ajustement pour le mode multi */
-#aiContainer {
-    margin: 0 0 0 20px;
-}
-
-/* Animation pour les scores qui changent */
-@keyframes scoreChange {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-.score-change {
-    animation: scoreChange 0.3s ease-in-out;
-}
-
-/* Style pour le conteneur des meilleurs scores */
-.high-scores {
-    position: relative;
-    min-width: 200px;
-    max-width: 250px;
-    margin-left: 20px;
-}
-
-.high-scores h4 {
-    font-size: 0.65em;
     margin-bottom: 5px;
-    color: var(--secondary-color);
-}
-
-/* Ajustement des colonnes du tableau */
-.high-scores-table td:first-child,
-.high-scores-table th:first-child {
-    width: 15%;
-}
-
-.high-scores-table td:nth-child(2),
-.high-scores-table th:nth-child(2) {
-    width: 25%;
-}
-
-.high-scores-table td:nth-child(3),
-.high-scores-table th:nth-child(3) {
-    width: 20%;
-}
-
-.high-scores-table td:nth-child(4),
-.high-scores-table th:nth-child(4) {
-    width: 40%;
-    font-size: 0.9em;
-}
-
-/* Style pour les lignes vides */
-.high-scores-table tr:nth-child(n+6) td {
-    color: #666;
-    font-style: italic;
-}
-
-.high-scores-table {
-    font-size: 0.55em;
-}
-
-.controls-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 15px;
-    border-radius: 8px;
-    min-width: 180px;
-}
-
-.buttons-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
-    width: 100%;
-    margin: 15px 0;
-}
-
-.start-btn, .pause-btn, #menuBtn {
-    font-family: 'Press Start 2P', cursive;
-    padding: 12px 15px;
-    font-size: 0.65em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.start-btn {
-    background-color: var(--secondary-color);
-    color: white;
-    border: 2px solid #2980b9;
-}
-
-.start-btn:hover {
-    background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-}
-
-.pause-btn {
-    background-color: var(--accent-color);
-    color: white;
-    border: 2px solid #c0392b;
-}
-
-.pause-btn:hover {
-    background-color: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
-}
-
-#menuBtn {
-    background-color: var(--primary-color);
     color: var(--text-color);
-    border: 2px solid #34495e;
+    text-shadow: 0 0 3px rgba(52, 152, 219, 0.7);
 }
 
-#menuBtn:hover {
-    background-color: #34495e;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+/* Mise en évidence du score actuel */
+#score, #level, #lines, #playerScore, #aiScore {
+    color: var(--secondary-color);
+    font-weight: bold;
 }
 
-.start-btn:active, .pause-btn:active, #menuBtn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+/* Style pour les scores par défaut */
+.default-score {
+    opacity: 0.7;
+}
+
+.default-value {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
 } 

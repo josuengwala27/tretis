@@ -56,9 +56,6 @@ class Tetris {
         this.currentPiece = null;
         this.nextPiece = null;
         
-        // Système de high scores
-        this.highScores = JSON.parse(localStorage.getItem('tetrisHighScores')) || [];
-        
         // Initialisation du système audio
         this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
@@ -136,45 +133,9 @@ class Tetris {
 
     // Initialisation d'une nouvelle partie
     start() {
-        // Réinitialiser l'état du jeu
         this.reset();
-        
-        // Générer la première pièce et la suivante
-        const pieces = Object.keys(this.pieces);
-        const randomPiece = pieces[Math.floor(Math.random() * pieces.length)];
-        const nextRandomPiece = pieces[Math.floor(Math.random() * pieces.length)];
-        
-        // Initialiser la pièce courante
-        this.currentPiece = {
-            matrix: this.pieces[randomPiece],
-            pos: {x: 3, y: 0},
-            type: randomPiece
-        };
-        
-        // Initialiser la prochaine pièce
-        this.nextPiece = {
-            matrix: this.pieces[nextRandomPiece],
-            pos: {x: 3, y: 0},
-            type: nextRandomPiece
-        };
-        
-        // Réinitialiser les compteurs
-        this.lastTime = 0;
-        this.dropCounter = 0;
-        this.gameOver = false;
-        this.isPaused = false;
-        
-        // Dessiner l'état initial
-        this.drawNextPiece();
-        this.draw();
-        
-        // Démarrer la boucle de jeu
-        const self = this; // Capture du contexte this
-        window.requestAnimationFrame(function(t) {
-            self.update(t);
-        });
-        
-        // Jouer le son de démarrage
+        this.generateNewPiece();
+        this.update();
         if (this.isSoundEnabled()) {
             this.playStartSound();
         }
@@ -199,29 +160,25 @@ class Tetris {
     // Génération d'une nouvelle pièce
     generateNewPiece() {
         const pieces = Object.keys(this.pieces);
-        const randomPiece = pieces[Math.floor(Math.random() * pieces.length)];
-        
         if (!this.currentPiece) {
             this.currentPiece = {
-                matrix: this.pieces[randomPiece],
+                matrix: this.pieces[pieces[Math.floor(Math.random() * pieces.length)]],
                 pos: {x: 3, y: 0},
-                type: randomPiece
+                type: pieces[Math.floor(Math.random() * pieces.length)]
             };
         } else {
             this.currentPiece = this.nextPiece;
         }
         
-        const nextRandomPiece = pieces[Math.floor(Math.random() * pieces.length)];
         this.nextPiece = {
-            matrix: this.pieces[nextRandomPiece],
+            matrix: this.pieces[pieces[Math.floor(Math.random() * pieces.length)]],
             pos: {x: 3, y: 0},
-            type: nextRandomPiece
+            type: pieces[Math.floor(Math.random() * pieces.length)]
         };
         
         if (this.checkCollision()) {
             this.gameOver = true;
             this.showGameOver();
-            return;
         }
         
         this.drawNextPiece();
@@ -583,46 +540,7 @@ class Tetris {
 
     // Affichage du game over
     showGameOver() {
-        this.updateHighScores();
         this.playGameOverSound();
-    }
-
-    // Mise à jour des high scores
-    updateHighScores() {
-        this.highScores.push(this.score);
-        this.highScores.sort((a, b) => b - a);
-        this.highScores = this.highScores.slice(0, 5);
-        localStorage.setItem('tetrisHighScores', JSON.stringify(this.highScores));
-        
-        const highScoresList = document.getElementById('highScoresList');
-        highScoresList.innerHTML = '';
-        this.highScores.forEach(score => {
-            const li = document.createElement('li');
-            li.textContent = score;
-            highScoresList.appendChild(li);
-        });
-    }
-
-    // Boucle de jeu principale
-    update(time = 0) {
-        // Si le jeu est terminé ou en pause, ne pas mettre à jour la logique
-        if (!this.gameOver && !this.isPaused) {
-            const deltaTime = time - this.lastTime;
-            this.lastTime = time;
-            
-            this.dropCounter += deltaTime;
-            if (this.dropCounter > 1000 - (this.level * 50)) {
-                this.drop();
-            }
-            
-            this.draw();
-        }
-        
-        // Toujours continuer la boucle d'animation, même en pause ou game over
-        const self = this; // Capture du contexte this
-        window.requestAnimationFrame(function(t) {
-            self.update(t);
-        });
     }
 
     // Sons spécifiques
@@ -667,19 +585,6 @@ class Tetris {
         setTimeout(() => this.playTone(880, 0.3, 'sine', 0.4), 200);
     }
 
-    // Méthode de débogage pour vérifier l'état du jeu
-    debugState() {
-        console.log('=== ÉTAT DU JEU ===');
-        console.log('gameOver:', this.gameOver);
-        console.log('isPaused:', this.isPaused);
-        console.log('currentPiece:', this.currentPiece);
-        console.log('nextPiece:', this.nextPiece);
-        console.log('score:', this.score);
-        console.log('level:', this.level);
-        console.log('lines:', this.lines);
-        console.log('==================');
-    }
-
     // Nettoyage des ressources lors de la destruction
     cleanup() {
         // Arrêter la boucle de jeu
@@ -698,5 +603,21 @@ class Tetris {
         this.currentPiece = null;
         this.nextPiece = null;
         this.holdPiece = null;
+    }
+
+    // Boucle de jeu principale
+    update(time = 0) {
+        if (!this.gameOver && !this.isPaused) {
+            const deltaTime = time - this.lastTime;
+            this.lastTime = time;
+            
+            this.dropCounter += deltaTime;
+            if (this.dropCounter > 1000 - (this.level * 50)) {
+                this.drop();
+            }
+            
+            this.draw();
+        }
+        requestAnimationFrame(this.update.bind(this));
     }
 } 

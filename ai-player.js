@@ -50,12 +50,7 @@ class AIPlayer extends Tetris {
             
             this.draw();
         }
-        
-        // Toujours continuer la boucle d'animation
-        const self = this; // Capture du contexte this
-        window.requestAnimationFrame(function(t) {
-            self.update(t);
-        });
+        requestAnimationFrame(this.update.bind(this));
     }
     
     // Surcharge de la méthode start pour synchroniser avec le jeu principal

@@ -20,34 +20,37 @@
     <!-- Container du jeu (caché au départ) -->
     <div id="gameContainer" class="game-container hidden">
         <div class="game-header">
-            <!-- Score Solo -->
-            <div id="soloScoreContainer" class="score-container">
+            <div class="score-container">
                 <div class="score">Score: <span id="score">0</span></div>
                 <div class="level">Niveau: <span id="level">1</span></div>
                 <div class="lines">Lignes: <span id="lines">0</span></div>
             </div>
             
-            <!-- Tableau des scores Multi -->
-            <div id="multiScoreContainer" class="score-container hidden">
-                <table class="score-table">
-                    <tr>
-                        <th></th>
-                        <th>Score</th>
-                        <th>Niveau</th>
-                        <th>Lignes</th>
-                    </tr>
-                    <tr>
-                        <td>Vous</td>
-                        <td id="playerScore">0</td>
-                        <td id="playerLevel">1</td>
-                        <td id="playerLines">0</td>
-                    </tr>
-                    <tr>
-                        <td>IA</td>
-                        <td id="aiScore">0</td>
-                        <td id="aiLevel">1</td>
-                        <td id="aiLines">0</td>
-                    </tr>
+            <!-- Nouveau tableau de score pour le mode multijoueur -->
+            <div id="multiScoreTable" class="multi-score-table hidden">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Joueur</th>
+                            <th>Score</th>
+                            <th>Niveau</th>
+                            <th>Lignes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vous</td>
+                            <td id="playerScore">0</td>
+                            <td id="playerLevel">1</td>
+                            <td id="playerLines">0</td>
+                        </tr>
+                        <tr>
+                            <td>IA</td>
+                            <td id="aiScore">0</td>
+                            <td id="aiLevel">1</td>
+                            <td id="aiLines">0</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             
@@ -64,22 +67,10 @@
         </div>
         
         <div class="game-wrapper">
+            <!-- Affichage de la prochaine pièce -->
             <div class="side-panel">
-                <div class="controls-container">
-                    <div class="hold-piece">
-                        <h4>Pièce gardée</h4>
-                        <canvas id="holdPiece"></canvas>
-                    </div>
-                    <div class="buttons-container">
-                        <button id="startBtn" class="start-btn">Démarrer</button>
-                        <button id="pauseBtn" class="pause-btn">Pause</button>
-                        <button id="menuBtn" class="menu-btn">Menu Principal</button>
-                    </div>
-                </div>
-                <div class="next-piece-container">
-                    <h4>Prochaine pièce</h4>
-                    <canvas id="nextPiece" class="next-piece"></canvas>
-                </div>
+                <h4>Prochaine pièce</h4>
+                <canvas id="nextPiece" class="next-piece"></canvas>
             </div>
             
             <!-- Plateau du joueur -->
@@ -94,25 +85,31 @@
                 <canvas id="aiTetris" class="main-board"></canvas>
             </div>
             
-            <!-- Meilleurs scores -->
-            <div class="high-scores">
-                <h4>Meilleurs Scores</h4>
-                <div class="high-scores-tabs">
-                    <button class="tab-btn active" data-mode="solo">Solo</button>
-                    <button class="tab-btn" data-mode="multi">Multi</button>
+            <!-- Panneau latéral avec les stats et contrôles -->
+            <div class="game-stats">
+                <div class="hold-piece">
+                    <h4>Pièce gardée</h4>
+                    <canvas id="holdPiece"></canvas>
                 </div>
-                <div class="high-scores-content">
-                    <table id="highScoresTable" class="high-scores-table">
-                        <thead>
-                            <tr>
-                                <th>Rang</th>
-                                <th>Score</th>
-                                <th>Mode</th>
-                            </tr>
-                        </thead>
-                        <tbody id="highScoresList">
-                        </tbody>
-                    </table>
+                <button id="startBtn" class="start-btn">Démarrer</button>
+                <button id="pauseBtn" class="pause-btn">Pause</button>
+                <button id="menuBtn" class="menu-btn">Menu Principal</button>
+                <div class="high-scores">
+                    <h4>Meilleurs Scores</h4>
+                    <div class="score-table-container">
+                        <table id="highScoresTable" class="score-table">
+                            <thead>
+                                <tr>
+                                    <th>Rang</th>
+                                    <th>Score</th>
+                                    <th>Mode</th>
+                                </tr>
+                            </thead>
+                            <tbody id="highScoresList">
+                                <!-- Les scores seront ajoutés ici dynamiquement -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,32 +119,36 @@
     <div id="gameOver" class="game-over hidden">
         <div class="game-over-content">
             <h2>Game Over!</h2>
-            <div id="soloGameOver">
-                <p id="winnerText">Score final: <span id="finalScore">0</span></p>
-            </div>
-            <div id="multiGameOver" class="hidden">
-                <h3 id="winnerAnnouncement"></h3>
-                <table class="final-score-table">
-                    <tr>
-                        <th>Joueur</th>
-                        <th>Score</th>
-                        <th>Niveau</th>
-                        <th>Lignes</th>
-                    </tr>
-                    <tr>
-                        <td>Vous</td>
-                        <td id="finalPlayerScore">0</td>
-                        <td id="finalPlayerLevel">1</td>
-                        <td id="finalPlayerLines">0</td>
-                    </tr>
-                    <tr>
-                        <td>IA</td>
-                        <td id="finalAIScore">0</td>
-                        <td id="finalAILevel">1</td>
-                        <td id="finalAILines">0</td>
-                    </tr>
+            <p id="winnerText">Score final: <span id="finalScore">0</span></p>
+            
+            <!-- Tableau de score final pour le mode multijoueur -->
+            <div id="finalScoreTable" class="final-score-table hidden">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Joueur</th>
+                            <th>Score</th>
+                            <th>Niveau</th>
+                            <th>Lignes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vous</td>
+                            <td id="finalPlayerScore">0</td>
+                            <td id="finalPlayerLevel">1</td>
+                            <td id="finalPlayerLines">0</td>
+                        </tr>
+                        <tr>
+                            <td>IA</td>
+                            <td id="finalAiScore">0</td>
+                            <td id="finalAiLevel">1</td>
+                            <td id="finalAiLines">0</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
+            
             <div class="game-over-buttons">
                 <button id="restartBtn">Rejouer</button>
                 <button id="backToMenuBtn">Menu Principal</button>
@@ -157,8 +158,6 @@
     
     <script src="tetris.js"></script>
     <script src="ai-player.js"></script>
-    <script src="score-manager.js"></script>
     <script src="game-manager.js"></script>
-    <script src="debug.js"></script>
 </body>
 </html> 
