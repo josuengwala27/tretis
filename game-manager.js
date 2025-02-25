@@ -7,10 +7,6 @@ class GameManager {
         // État du jeu
         this.gameMode = null; // 'solo' ou 'multi'
         
-        // Seuils pour la "Pause douceur"
-        this.playerLastSlowdownThreshold = 0;
-        this.aiLastSlowdownThreshold = 0;
-        
         // Éléments DOM
         this.mainMenu = document.getElementById('mainMenu');
         this.gameContainer = document.getElementById('gameContainer');
@@ -229,24 +225,6 @@ class GameManager {
         // Mettre à jour les scores en mode multijoueur
         if (this.gameMode === 'multi') {
             this.scoreUpdateInterval = setInterval(() => this.updateMultiScores(), 200);
-        } else if (this.gameMode === 'solo') {
-            // En mode solo, vérifier périodiquement les seuils de score pour la "Pause douceur"
-            this.scoreUpdateInterval = setInterval(() => this.checkSoloSlowdownThresholds(), 200);
-        }
-    }
-    
-    // Vérifier les seuils de score en mode solo
-    checkSoloSlowdownThresholds() {
-        if (!this.playerGame || this.playerGame.gameOver) return;
-        
-        const playerCurrentThreshold = Math.floor(this.playerGame.score / 1000) * 1000;
-        if (playerCurrentThreshold > 0 && playerCurrentThreshold > this.playerLastSlowdownThreshold) {
-            // Activer le ralentissement
-            this.playerGame.activateSlowdown(10000);
-            this.playerLastSlowdownThreshold = playerCurrentThreshold;
-            
-            // Afficher une notification
-            this.showSlowdownNotification("Pause douceur ! Les pièces tombent plus lentement pendant 10 secondes.");
         }
     }
     
@@ -263,63 +241,6 @@ class GameManager {
         document.getElementById('aiScore').textContent = this.aiGame.score;
         document.getElementById('aiLevel').textContent = this.aiGame.level;
         document.getElementById('aiLines').textContent = this.aiGame.lines;
-        
-        // Vérifier les seuils pour la "Pause douceur"
-        this.checkSlowdownThresholds();
-    }
-    
-    // Nouvelle méthode pour vérifier les seuils de score pour la "Pause douceur"
-    checkSlowdownThresholds() {
-        // Vérifier le score du joueur
-        const playerCurrentThreshold = Math.floor(this.playerGame.score / 1000) * 1000;
-        if (playerCurrentThreshold > 0 && playerCurrentThreshold > this.playerLastSlowdownThreshold) {
-            // Activer le ralentissement pour les deux joueurs
-            this.activateSlowdownForBoth();
-            this.playerLastSlowdownThreshold = playerCurrentThreshold;
-        }
-        
-        // Vérifier le score de l'IA
-        const aiCurrentThreshold = Math.floor(this.aiGame.score / 1000) * 1000;
-        if (aiCurrentThreshold > 0 && aiCurrentThreshold > this.aiLastSlowdownThreshold) {
-            // Activer le ralentissement pour les deux joueurs
-            this.activateSlowdownForBoth();
-            this.aiLastSlowdownThreshold = aiCurrentThreshold;
-        }
-    }
-    
-    // Activer le ralentissement pour les deux joueurs
-    activateSlowdownForBoth() {
-        if (this.playerGame && !this.playerGame.gameOver) {
-            this.playerGame.activateSlowdown(10000);
-        }
-        
-        if (this.aiGame && !this.aiGame.gameOver) {
-            this.aiGame.activateSlowdown(10000);
-        }
-        
-        // Afficher une notification
-        this.showSlowdownNotification("Pause douceur ! Les pièces tombent plus lentement pendant 10 secondes.");
-    }
-    
-    // Afficher une notification de ralentissement
-    showSlowdownNotification(message) {
-        // Créer un élément de notification s'il n'existe pas déjà
-        let notification = document.getElementById('slowdownNotification');
-        if (!notification) {
-            notification = document.createElement('div');
-            notification.id = 'slowdownNotification';
-            notification.className = 'slowdown-notification';
-            document.body.appendChild(notification);
-        }
-        
-        // Afficher le message
-        notification.textContent = message;
-        notification.classList.add('show');
-        
-        // Masquer après 5 secondes
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 5000);
     }
     
     // Vérifier l'état du jeu (game over)

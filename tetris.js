@@ -30,10 +30,6 @@ class Tetris {
         this.dropCounter = 0;
         this.lastTime = 0;
         
-        // Facteur de ralentissement pour la "Pause douceur"
-        this.slowdownFactor = 1;
-        this.slowdownEndTime = 0;
-        
         // Couleurs des pièces
         this.colors = [
             null,
@@ -623,40 +619,14 @@ class Tetris {
             const deltaTime = time - this.lastTime;
             this.lastTime = time;
             
-            // Vérifier si le ralentissement est terminé
-            if (this.slowdownEndTime > 0 && time > this.slowdownEndTime) {
-                this.slowdownFactor = 1;
-                this.slowdownEndTime = 0;
-            }
-            
             this.dropCounter += deltaTime;
-            // Appliquer le facteur de ralentissement à la vitesse de chute
-            const dropSpeed = (1000 - (this.level * 50)) * this.slowdownFactor;
-            if (this.dropCounter > dropSpeed) {
+            if (this.dropCounter > 1000 - (this.level * 50)) {
                 this.drop();
             }
             
             this.draw();
         }
         requestAnimationFrame(this.update.bind(this));
-    }
-
-    // Nouvelle méthode pour activer le ralentissement temporaire
-    activateSlowdown(durationMs = 10000) {
-        // Ralentir la chute des pièces de 20%
-        this.slowdownFactor = 1.2;
-        this.slowdownEndTime = performance.now() + durationMs;
-        
-        // Jouer un son pour indiquer le ralentissement
-        this.playSlowdownSound();
-    }
-    
-    // Son pour le ralentissement
-    playSlowdownSound() {
-        if (this.isSoundEnabled()) {
-            this.playTone(300, 0.2, 'sine', 0.4);
-            setTimeout(() => this.playTone(200, 0.3, 'sine', 0.4), 200);
-        }
     }
 
     // Nouvelle méthode pour forcer la prochaine pièce à être facile (carré ou ligne droite)
